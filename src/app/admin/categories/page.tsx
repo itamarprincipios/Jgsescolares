@@ -6,6 +6,8 @@ import { Search, Edit } from "lucide-react";
 import { redirect } from "next/navigation";
 import DeleteCategoryButton from "./delete-button";
 
+export const dynamic = "force-dynamic";
+
 async function getCategories() {
     return await prisma.category.findMany({
         include: {

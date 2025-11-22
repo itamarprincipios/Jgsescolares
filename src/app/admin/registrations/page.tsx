@@ -7,6 +7,8 @@ import StatusBadge from "@/components/status-badge";
 import ApproveButton from "./approve-button";
 import RejectButton from "./reject-button";
 
+export const dynamic = "force-dynamic";
+
 async function getRegistrations() {
     return await prisma.team.findMany({
         include: {

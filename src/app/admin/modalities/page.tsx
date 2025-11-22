@@ -6,6 +6,8 @@ import { Search, Edit } from "lucide-react";
 import { redirect } from "next/navigation";
 import DeleteModalityButton from "./delete-button";
 
+export const dynamic = "force-dynamic";
+
 async function getModalities() {
     return await prisma.modality.findMany({
         include: {
@@ -78,8 +80,8 @@ export default async function ModalitiesPage() {
                                         <td className="p-4 font-medium text-white">{modality.name}</td>
                                         <td className="p-4">
                                             <span className={`px-2 py-1 rounded-full text-xs ${modality.allowsMixed
-                                                    ? "bg-green-500/20 text-green-300"
-                                                    : "bg-slate-500/20 text-slate-300"
+                                                ? "bg-green-500/20 text-green-300"
+                                                : "bg-slate-500/20 text-slate-300"
                                                 }`}>
                                                 {modality.allowsMixed ? "Sim" : "Não"}
                                             </span>

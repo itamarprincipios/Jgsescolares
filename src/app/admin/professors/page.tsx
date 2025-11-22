@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { toggleUserStatus } from "@/app/actions/users";
 import { Search, CheckCircle, XCircle } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 async function getProfessors() {
     return await prisma.user.findMany({
         where: { role: "PROFESSOR" },

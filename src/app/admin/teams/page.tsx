@@ -6,6 +6,8 @@ import { Search, Edit, Filter, Eye } from "lucide-react";
 import { redirect } from "next/navigation";
 import DeleteTeamButton from "./delete-button";
 
+export const dynamic = "force-dynamic";
+
 async function getTeams() {
     return await prisma.team.findMany({
         include: {

@@ -6,6 +6,8 @@ import { Search, Edit } from "lucide-react";
 import { redirect } from "next/navigation";
 import DeleteSchoolButton from "./delete-button";
 
+export const dynamic = "force-dynamic";
+
 async function getSchools() {
     return await prisma.school.findMany({
         include: {

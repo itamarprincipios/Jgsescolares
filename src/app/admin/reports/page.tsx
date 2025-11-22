@@ -5,6 +5,8 @@ import { FileDown, FileText } from "lucide-react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function ReportsPage() {
     const session = await getServerSession(authOptions);
     if (!session || session.user.role !== "ADMIN") redirect("/login");
