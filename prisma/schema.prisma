@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PROFESSOR
+}
+
+enum TeamStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  MIXED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(PROFESSOR)
+  active    Boolean  @default(false)
+  phone     String?
+  schoolId  String?
+  school    School?  @relation(fields: [schoolId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model School {
+  id        String   @id @default(cuid())
+  name      String
+  city      String?
+  director  String?
+  phone     String?
+  logo      String?
+  users     User[]
+  students  Student[]
+  teams     Team[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Modality {
+  id          String   @id @default(cuid())
+  name        String
+  allowsMixed Boolean   @default(false)
+  teams       Team[]
+  students    Student[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  maxAge    Int
+  teams     Team[]
+  students  Student[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Student {
+  id        String   @id @default(cuid())
+  name          String
+  birthDate     DateTime
+  rg            String?
+  photo         String?
+  documentPhoto String?
+  guardianPhone String?
+  gender        Gender   @default(MALE)
+  schoolId      String
+  school        School   @relation(fields: [schoolId], references: [id])
+  teams         Team[]   @relation("TeamStudents")
+  modalities    Modality[]
+  categories    Category[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Team {
+  id          String     @id @default(cuid())
+  name        String?
+  gender      Gender?
+  schoolId    String
+  school      School     @relation(fields: [schoolId], references: [id])
+  modalityId  String
+  modality    Modality   @relation(fields: [modalityId], references: [id])
+  categoryId  String
+  category    Category   @relation(fields: [categoryId], references: [id])
+  students    Student[]  @relation("TeamStudents")
+  status      TeamStatus @default(PENDING)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
