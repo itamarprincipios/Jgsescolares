@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { School, Dumbbell, Users, Trophy } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 async function getStats() {
     const schoolsCount = await prisma.school.count();
     const modalitiesCount = await prisma.modality.count();
