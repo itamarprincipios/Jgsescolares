@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import RegisterForm from "./form";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function RegisterPage() {
     const schools = await prisma.school.findMany({
         orderBy: { name: "asc" },
