@@ -16,13 +16,13 @@ ON CONFLICT (id) DO NOTHING;
 
 -- 2. Criar usuário admin
 -- Email: admin@jem.com
--- Senha: admin000
+-- Senha: admin123
 INSERT INTO "User" (id, name, email, password, role, active, "schoolId", "createdAt", "updatedAt")
 VALUES (
   'clx-admin-user-001',
   'Administrador',
   'admin@jem.com',
-  '$2b$10$NbARmh5CEo/va2w1EvdWOOHssIoIaBgqY11qJHtNVF1bFBKA2FUHi',
+  '$2b$10$VnuG5xZir8/3OysewZU7/eLa4RDX54zjwZsKru83WAa1iYxUqP3Oq',
   'ADMIN',
   true,
   'clx-admin-school-001',

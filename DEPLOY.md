@@ -58,7 +58,7 @@ Após deploy bem-sucedido:
 
 **Credenciais de acesso:**
 - Email: `admin@jem.com`
-- Senha: `admin000`
+- Senha: `admin123`
 
 ---
 
