@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Lock, Mail, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -65,13 +65,12 @@ export default function LoginPage() {
 
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-blue-100 ml-1">Email</label>
-                        <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-300 w-5 h-5" />
+                        <div>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="input-field pl-10"
+                                className="input-field"
                                 placeholder="admin@jem.com"
                                 required
                             />
@@ -80,13 +79,12 @@ export default function LoginPage() {
 
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-blue-100 ml-1">Senha</label>
-                        <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-300 w-5 h-5" />
+                        <div>
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="input-field pl-10"
+                                className="input-field"
                                 placeholder="••••••••"
                                 required
                             />

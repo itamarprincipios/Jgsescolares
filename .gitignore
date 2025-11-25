@@ -1,43 +1,45 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Ignore node modules
+node_modules/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Ignore build output
+.next/
+out/
+dist/
+build/
 
-# testing
-/coverage
+# Ignore environment variables
+.env
+.env.local
+.env.production
+.env.development
 
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Ignore logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+*.log
 
-# env files (can opt-in for committing if needed)
-.env*
+# Ignore OS files
+.DS_Store
+Thumbs.db
 
-# vercel
-.vercel
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Ignore database files
+*.db
+*.sqlite
+*.sqlite3
+prisma/dev.db
 
-/src/generated/prisma
+# Ignore PM2 files
+.pm2/
+
+# Ignore certificates
+*.pem
+*.key
+*.crt

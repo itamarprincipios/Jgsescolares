@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import Link from "next/link";
-import { Edit, Trash2, User } from "lucide-react";
+import { Edit, Trash2, User, Printer } from "lucide-react";
 import { deleteStudent } from "@/app/actions/students";
 
 export default async function StudentsPage() {
@@ -77,6 +77,14 @@ export default async function StudentsPage() {
                                         </td>
                                         <td className="p-4 text-right">
                                             <div className="flex items-center justify-end gap-2">
+                                                <Link
+                                                    href={`/professor/students/${student.id}/badge`}
+                                                    className="p-2 text-green-400 hover:bg-green-500/10 rounded-lg transition-colors"
+                                                    title="Imprimir Crachá"
+                                                    target="_blank"
+                                                >
+                                                    <Printer className="w-4 h-4" />
+                                                </Link>
                                                 <Link
                                                     href={`/professor/students/${student.id}/edit`}
                                                     className="p-2 text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors"

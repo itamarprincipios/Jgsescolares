@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { registerProfessor } from "@/app/actions/users";
-import { Loader2, User, Mail, Lock, Phone, School } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { School as SchoolType } from "@prisma/client";
 
 interface RegisterFormProps {
@@ -60,13 +60,12 @@ export default function RegisterForm({ schools }: RegisterFormProps) {
 
             <div className="space-y-2">
                 <label className="text-sm font-medium text-blue-100 ml-1">Nome Completo</label>
-                <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-300 w-5 h-5" />
+                <div>
                     <input
                         name="name"
                         type="text"
                         required
-                        className="input-field pl-10"
+                        className="input-field"
                         placeholder="Seu nome"
                     />
                 </div>
@@ -74,13 +73,12 @@ export default function RegisterForm({ schools }: RegisterFormProps) {
 
             <div className="space-y-2">
                 <label className="text-sm font-medium text-blue-100 ml-1">Email</label>
-                <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-300 w-5 h-5" />
+                <div>
                     <input
                         name="email"
                         type="email"
                         required
-                        className="input-field pl-10"
+                        className="input-field"
                         placeholder="seu@email.com"
                     />
                 </div>
@@ -88,13 +86,12 @@ export default function RegisterForm({ schools }: RegisterFormProps) {
 
             <div className="space-y-2">
                 <label className="text-sm font-medium text-blue-100 ml-1">Telefone</label>
-                <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-300 w-5 h-5" />
+                <div>
                     <input
                         name="phone"
                         type="tel"
                         required
-                        className="input-field pl-10"
+                        className="input-field"
                         placeholder="(00) 00000-0000"
                     />
                 </div>
@@ -102,9 +99,8 @@ export default function RegisterForm({ schools }: RegisterFormProps) {
 
             <div className="space-y-2">
                 <label className="text-sm font-medium text-blue-100 ml-1">Escola</label>
-                <div className="relative">
-                    <School className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-300 w-5 h-5" />
-                    <select name="schoolId" className="input-field pl-10" required>
+                <div>
+                    <select name="schoolId" className="input-field" required>
                         <option value="">Selecione sua escola...</option>
                         {schools.map((school) => (
                             <option key={school.id} value={school.id}>
@@ -117,13 +113,12 @@ export default function RegisterForm({ schools }: RegisterFormProps) {
 
             <div className="space-y-2">
                 <label className="text-sm font-medium text-blue-100 ml-1">Senha</label>
-                <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-300 w-5 h-5" />
+                <div>
                     <input
                         name="password"
                         type="password"
                         required
-                        className="input-field pl-10"
+                        className="input-field"
                         placeholder="••••••••"
                         minLength={6}
                     />

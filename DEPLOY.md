@@ -1,107 +1,103 @@
-# 🚀 Deploy Rápido - Resumo Executivo
+# Guia Rápido de Deploy - VPS Hostgator
 
-## ⚡ Configuração Rápida (5 minutos)
+## Informações da VPS
+- **Host:** 129.121.35.30
+- **Porta SSH:** 22022
+- **Usuário:** root
+- **Domínio:** jgsescolares.online
 
-### 1. Obter DATABASE_URL do Supabase
+## Passo a Passo
 
-1. Acesse: https://supabase.com/dashboard/project/tlhizysfuztcqxnrusnu/settings/database
-2. Role até **"Connection Pooling"**
-3. Copie a URL em modo **Transaction**
-4. Adicione no final: `?pgbouncer=true&connection_limit=1`
+### 1. Conectar à VPS
 
-**Formato esperado:**
+```bash
+ssh -p 22022 root@129.121.35.30
 ```
-postgresql://postgres.tlhizysfuztcqxnrusnu:[SUA-SENHA]@aws-0-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1
+
+### 2. Executar Scripts de Configuração
+
+Os scripts estão na pasta `scripts/deploy/`. Execute na ordem:
+
+```bash
+# 1. Configurar servidor
+bash 01-setup-server.sh
+
+# 2. Configurar MySQL (você será solicitado a definir senha)
+mysql_secure_installation
+bash 02-setup-database.sh
+
+# 3. Clonar repositório
+cd /var/www/jem
+git clone https://github.com/SEU_USUARIO/jem-app.git .
+
+# 4. Configurar .env
+nano .env
+# Cole as configurações (veja abaixo)
+
+# 5. Fazer deploy
+bash 04-deploy-app.sh
+
+# 6. Configurar Nginx
+bash 03-setup-nginx.sh
+
+# 7. Configurar SSL (aguarde DNS propagar primeiro!)
+bash 05-setup-ssl.sh
 ```
 
----
+### 3. Configuração do .env
 
-### 2. Configurar no Vercel
+```env
+# Database (use a senha que você definiu no passo 2)
+DATABASE_URL="mysql://jem_user:SUA_SENHA@localhost:3306/jem_db"
 
-Vá em **Settings → Environment Variables** e adicione:
+# NextAuth (gere com: openssl rand -base64 32)
+NEXTAUTH_SECRET="SEU_SECRET_AQUI"
+NEXTAUTH_URL="https://jgsescolares.online"
+```
 
-| Nome da Variável | Valor | Ambientes |
-|------------------|-------|-----------|
-| `DATABASE_URL` | A URL do passo 1 | ✅ Prod ✅ Preview ✅ Dev |
-| `NEXTAUTH_SECRET` | `goLCpyrodLQrOWpxuk9OPKeFIyzJT5wCzqDzX7QUJGc=` | ✅ Prod ✅ Preview ✅ Dev |
-| `NEXTAUTH_URL` | `https://seu-projeto.vercel.app` | ✅ Prod |
-| `NODE_ENV` | `production` | ✅ Prod |
+### 4. Comandos Úteis
 
----
+```bash
+# Ver status da aplicação
+pm2 status
 
-### 3. Configurar Build Command
+# Ver logs
+pm2 logs jem-app
 
-**Settings → General → Build & Development Settings**
+# Reiniciar aplicação
+pm2 restart jem-app
 
-- **Build Command:** `prisma generate && prisma migrate deploy && next build`
-- **Install Command:** `npm install`
+# Atualizar aplicação
+cd /var/www/jem
+git pull
+npm install
+npm run build
+pm2 restart jem-app
+```
 
----
+## Credenciais Padrão
 
-### 4. Deploy
+Após o deploy, acesse:
+- **URL:** https://jgsescolares.online
+- **Admin:** admin@jem.com
+- **Senha:** admin123
 
-1. Vá em **Deployments**
-2. Clique em **Redeploy**
-3. Desmarque **"Use existing Build Cache"**
-4. Aguarde 2-3 minutos
+**⚠️ IMPORTANTE:** Altere a senha do admin após o primeiro login!
 
----
+## Troubleshooting
 
-### 5. Criar Usuário Admin
+### Aplicação não inicia
+```bash
+pm2 logs jem-app --lines 50
+```
 
-Após deploy bem-sucedido:
+### Erro 502 Bad Gateway
+```bash
+pm2 status  # Verificar se app está rodando
+systemctl status nginx  # Verificar Nginx
+```
 
-1. Acesse: https://supabase.com/dashboard/project/tlhizysfuztcqxnrusnu/editor
-2. Clique em **SQL Editor**
-3. Cole o conteúdo do arquivo `scripts/create-admin-user.sql`
-4. Clique em **Run**
-
-**Credenciais de acesso:**
-- Email: `admin@jem.com`
-- Senha: `admin123`
-
----
-
-## ✅ Checklist
-
-- [ ] DATABASE_URL configurada no Vercel
-- [ ] NEXTAUTH_SECRET configurada no Vercel
-- [ ] NEXTAUTH_URL configurada no Vercel (com URL real do projeto)
-- [ ] Build command configurado
-- [ ] Deploy realizado
-- [ ] Script SQL executado no Supabase
-- [ ] Login testado
-
----
-
-## 🆘 Problemas Comuns
-
-### ❌ Erro: "Can't reach database server"
-- Verifique se usou a URL do **pooler** (porta 6543, não 5432)
-- Confirme que adicionou `?pgbouncer=true&connection_limit=1`
-
-### ❌ Erro: "NEXTAUTH_URL is not defined"
-- Adicione a variável NEXTAUTH_URL com a URL do Vercel
-
-### ❌ Não consigo fazer login
-- Execute o script SQL `create-admin-user.sql` no Supabase
-- Verifique se o NEXTAUTH_SECRET está configurado
-
----
-
-## 📞 Precisa de Ajuda?
-
-Se encontrar algum erro:
-1. Copie a mensagem de erro completa
-2. Verifique os logs no Vercel (Deployments → Ver logs)
-3. Me envie o erro para análise
-
----
-
-**Arquivos importantes criados:**
-- ✅ `vercel.json` - Configuração do Vercel
-- ✅ `scripts/create-admin-user.sql` - Script para criar admin
-- ✅ `scripts/generate-password-hash.js` - Gerar hash de senhas
-- ✅ `next.config.ts` - Atualizado com output standalone
-
-Boa sorte! 🎉
+### SSL não funciona
+- Aguarde propagação DNS (pode levar até 24h)
+- Verifique se domínio aponta para 129.121.35.30
+- Execute: `certbot certificates` para ver status
